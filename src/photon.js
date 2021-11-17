@@ -163,3 +163,72 @@ export function depthOfField (focalLength, circleOfConfusion, focusingDistance, 
   )
 }
 
+
+/*
+  Given a type of aperture scale, returns a list of f-stops
+  between f1 and f90.
+
+  Scale is one of:
+    - full-stop
+    - half-of-a-stop
+    - third-of-a-stop
+*/
+export function fStops (scale) {
+  let allFStops = {
+    'full-stop': [1.0, 1.4, 2, 2.8, 4, 5.6, 8, 11, 16, 22, 32, 45, 64, 90],
+    'half-of-a-stop': [1.0, 1.2, 1.4, 1.7, 2, 2.4, 2.8, 3.3, 4, 4.8, 5.6, 6.7, 8, 9.5, 11, 13, 16, 19, 22, 27, 32, 38, 45, 54, 64, 76, 90],
+    'third-of-a-stop': [1.0, 1.1, 1.2, 1.4, 1.6, 1.8, 2, 2.2, 2.5, 2.8, 3.2, 3.5, 4, 4.5, 5.0, 5.6, 6.3, 7.1, 8, 9, 10, 11, 13, 14, 16, 18, 20, 22, 25, 29, 32, 36, 40, 45, 51, 57, 64, 72, 80, 90]
+  }
+
+  let fStops = allFStops[scale]
+
+  if (!fStops) {
+    throw Error(`fStops invoked with scale '${scale}' which is not supported.`)
+  }
+
+  return fStops
+}
+
+
+/*
+  Given a type of aperture scale, returns a first wider
+  f-stop, if it exists. Otherwise returns null.
+
+  See fStops().
+*/
+export function nextWiderFStop (fStop, scale) {
+  if (!fStop) {
+    return null
+  }
+
+  let stops = fStops(scale)
+  let idx = stops.indexOf(fStop)
+
+  if (idx === -1 || idx === 0) {
+    return null
+  } else {
+    return stops[idx - 1]
+  }
+}
+
+
+/*
+  Given a type of aperture scale, returns a first narrower
+  f-stop, if it exists. Otherwise returns null.
+
+  See fStops().
+*/
+export function nextNarrowerFStop (fStop, scale) {
+  if (!fStop) {
+    return null
+  }
+
+  let stops = fStops(scale)
+  let idx = stops.indexOf(fStop)
+
+  if (idx === -1 || idx === stops.length - 1) {
+    return null
+  } else {
+    return stops[idx + 1]
+  }
+}
