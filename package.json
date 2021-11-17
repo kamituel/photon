@@ -1,11 +1,12 @@
 {
   "name": "@kamituel/photon",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "Utilities for handling photography-related calculations and conversions.",
   "type": "module",
+  "main": "src/photon.js",
   "scripts": {
     "test": "mocha",
-    "publish": "npm test && npm publish --access public"
+    "publish2": "npm test && npm publish --access public"
   },
   "repository": {
     "type": "git",
